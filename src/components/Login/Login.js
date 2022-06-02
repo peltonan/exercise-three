@@ -16,11 +16,30 @@ const Login = (props) => {
   //if those "things" could change because your component (or some parent component) 
   //re-rendered. ~ Max"
 
-  //Runs once, BUT entering enteredX in the array, makes it check for changes, and run again//
+  /*  useEffect(() => {
+     console.log('EFFECT RUNNING!');
+ 
+     return () => {
+       console.log('EFFECT CLEANUP');
+     };
+   }, [enteredPassword]);
+  */
+
+  //useEffect runs when site is rendered, BUT entering enteredX in the array, a dependency, 
+  //makes it check for changes, and ONLY then renders. The array [] stops "auto-render."//
+
   useEffect(() => {
-    setFormIsValid(
-      enteredEmail.includes('@') && enteredPassword.trim().length > 6
-    );
+    const identifier = setTimeout(() => {
+      console.log('Checking from Validity!');
+      setFormIsValid(
+        enteredEmail.includes('@') && enteredPassword.trim().length > 6
+      );
+    }, 500);
+
+    return () => {
+      console.log('Cleanup');
+      clearTimeout(identifier);
+    };
   }, [enteredEmail, enteredPassword]);
 
   const emailChangeHandler = (event) => {
